@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(features = "Features"
         ,glue = "stepdefinition"
         , plugin = {"pretty","html:target/report.html"}
-        , tags = "@ChatCreateUser"
+        , tags = "@ChatCreateUserPojo"
        // , dryRun = true
 )
 public class TestRunner {

@@ -15,6 +15,8 @@ import util.POJO.sampleUser.CreateSampleUserPOJO;
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
+import static util.SpecObject.MySpecObject.getRequestSpecificationObject;
+import static util.payload.SampleUserPayLoads.getSampleUserPojoObject;
 import static util.utility.ConfigReader.getSampleUserUrl;
 
 public class SampleUserSD {
@@ -27,16 +29,24 @@ public class SampleUserSD {
     public void create_user_payload_is_created() {
 
 
-        RequestSpecification requestCreateUser = new RequestSpecBuilder()
+   /*     RequestSpecification requestCreateUser = new RequestSpecBuilder()
                 .setBaseUri("https://reqres.in/")
                 .addHeader("Content-Type","application/json")
                 .build();
+*/
 
-         request = given().log().all().spec(requestCreateUser).body(
+        /*RequestSpecification requestCreateUser = getRequestSpecificationObject();
+                request = given().log().all().spec(requestCreateUser).body(
                 "{\n" +
                 "    \"name\": \"Shashi\",\n" +
                 "    \"job\": \"leader\"\n" +
-                "}");
+                "}");*/
+
+        request = given().log().all().spec(getRequestSpecificationObject()).body(
+                "{\n" +
+                        "    \"name\": \"Shashi\",\n" +
+                        "    \"job\": \"leader\"\n" +
+                        "}");
 
     }
     @When("user call AddUser request with POST Method call")
@@ -76,18 +86,18 @@ public class SampleUserSD {
                 .addHeader("Content-Type","application/json")
                 .build();*/
 
-        RequestSpecification requestCreateUser = new RequestSpecBuilder()
+       /* RequestSpecification requestCreateUser = new RequestSpecBuilder()
                 .setBaseUri(getSampleUserUrl())
                 .addHeader("Content-Type","application/json")
-                .build();
+                .build();*/
 
 
-        CreateSampleUserPOJO ob = new CreateSampleUserPOJO();
+   /*     CreateSampleUserPOJO ob = new CreateSampleUserPOJO();
         ob.setName("Vipin");
-        ob.setJob("Test Lead");
+        ob.setJob("Test Lead");*/
 
-        request = given().log().all().spec(requestCreateUser)
-                .body(ob);
+        request = given().log().all().spec(getRequestSpecificationObject())
+                .body(getSampleUserPojoObject());
 
     }
 }
