@@ -15,4 +15,12 @@ public class SampleUserPayLoads {
         ob.setJob("Test Lead");
         return ob;
     }
+
+    public static CreateSampleUserPOJO getSampleUserPojoObject(String name,String job)
+    {
+        CreateSampleUserPOJO ob = new CreateSampleUserPOJO();
+        ob.setName(name);
+        ob.setJob(job);
+        return ob;
+    }
 }

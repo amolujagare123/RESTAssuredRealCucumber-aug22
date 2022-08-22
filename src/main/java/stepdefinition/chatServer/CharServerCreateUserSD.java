@@ -12,6 +12,8 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.Assert;
 import util.POJO.chatServer.CreateChatUserPOJO;
+import util.payload.APIChatResources;
+import util.payload.APIResources;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import static io.restassured.RestAssured.given;
 import static util.SpecObject.ChatSpecObject.getChatRequestSpecificationObject;
 import static util.payload.ChatServerPayLoads.getCreateUserPojoObject;
+import static util.payload.ChatServerPayLoads.getUserPojoObject;
 import static util.utility.ConfigReader.getChatServerUrl;
 
 public class CharServerCreateUserSD {
@@ -144,5 +147,33 @@ public class CharServerCreateUserSD {
     }
 
 
+    @When("user calls {string} request with {string} Method")
+    public void userCallsRequestWithMethod(String requestType, String method) {
 
+        APIChatResources resourceAPI =APIChatResources.valueOf(requestType);
+        System.out.println("My resource = "+resourceAPI.getResource());
+
+        switch (method)
+        {
+            case "POST"    :  response = request.when().post(resourceAPI.getResource()); break;
+            case "DELETE" :  response = request.when().delete(resourceAPI.getResource()); break;
+            case "PUT" :  response = request.when().put(resourceAPI.getResource()); break;
+            case "GET"    :  response = request.when().get(resourceAPI.getResource()); break;
+        }
+    }
+
+    @Given("Update chat user payload is created using POJO with values {string},{string},{string},{string},{string},{string}")
+    public void updateChatUserPayloadIsCreatedUsingPOJOWithValues(String name, String surname, String username, String password, String email, String nickName) throws IOException {
+
+        request = given().log().all().spec(getChatRequestSpecificationObject())
+                .body(getUserPojoObject(name,surname,username,password,email,nickName));
+
+
+    }
+
+
+    @Given("chat user basic payload is created")
+    public void chatUserBasicPayloadIsCreated() throws IOException {
+        request = given().log().all().spec(getChatRequestSpecificationObject());
+    }
 }

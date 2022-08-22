@@ -11,6 +11,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.Assert;
 import util.POJO.sampleUser.CreateSampleUserPOJO;
+import util.payload.APIResources;
 
 import java.io.IOException;
 
@@ -99,5 +100,66 @@ public class SampleUserSD {
         request = given().log().all().spec(getRequestSpecificationObject())
                 .body(getSampleUserPojoObject());
 
+    }
+
+    @Given("Update user payload is created using POJO")
+    public void updateUserPayloadIsCreatedUsingPOJO() {
+        request = given().log().all().spec(getRequestSpecificationObject())
+                .body(getSampleUserPojoObject("Amol","Test lead"));
+    }
+
+    @When("user call UpdateUser request with PUT Method call")
+    public void userCallUpdateUserRequestWithPUTMethodCall() {
+
+        response =  request.when().put("/api/users/2");
+    }
+
+    @Given("Get user payload is created")
+    public void getUserPayloadIsCreated() {
+        request = given().log().all().spec(getRequestSpecificationObject());
+
+    }
+
+    @When("user call GetUser request with GET Method call")
+    public void userCallGetUserRequestWithGETMethodCall() {
+
+        response =  request.when().get("/api/users/2");
+
+    }
+
+    @Given("Delete user payload is created")
+    public void delete_user_payload_is_created() {
+        request = given().log().all().spec(getRequestSpecificationObject());
+    }
+    @When("user call DeleteUser request with DELETE Method call")
+    public void user_call_delete_user_request_with_delete_method_call() {
+        response =  request.when().delete("/api/users/2");
+    }
+
+   /* @When("user call {string} request with {string} Method call")
+    public void userCallRequestWithMethodCall(String requestType, String method) {
+
+        switch (requestType)
+        {
+            case "AddUser"    :  response = request.when().post("/api/users"); break;
+            case "DeleteUser" :  response = request.when().delete("/api/users/2"); break;
+            case "UpdateUser" :  response = request.when().put("/api/users/2"); break;
+            case "GetUser"    :  response = request.when().get("/api/users/2"); break;
+        }
+    }*/
+
+    @When("user call {string} request with {string} Method call")
+    public void userCallRequestWithMethodCall(String requestType, String method) {
+
+        APIResources resourceAPI =APIResources.valueOf(requestType);
+        System.out.println("My resource = "+resourceAPI.getResource());
+
+        switch (method)
+        {
+            case "POST"    :  response = request.when().post(resourceAPI.getResource()); break;
+            case "DELETE" :  response = request.when().delete(resourceAPI.getResource()); break;
+            case "PUT" :  response = request.when().put(resourceAPI.getResource()); break;
+            case "GET"    :  response = request.when().get(resourceAPI.getResource()); break;
+        }
     }
 }
